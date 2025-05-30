@@ -1,4 +1,4 @@
-# 🚀 Script de Criar uma aplicação com NextJS, Shadcn UI com Prettier e ESLint Automatizado no WSL
+# 🚀 Script criador de aplicação com NextJS, Shadcn UI com Prettier e ESLint com push para o Github Automatizado no WSL
 
 Este script simplifica o fluxo de trabalho da criação de uma aplicação Next, com Shadcn UI
 iniciando e criando um repositório com o Git e Github.
