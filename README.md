@@ -208,7 +208,7 @@ Você pode personalizar este script para incluir validações, log de histórico
 - Git instalado
 - Node instalado >= 18
 - Pnpm instalado globalmente
-- Terminal WSL (Ubuntu)
+- Ambiente Linux (Ubuntu, Kali, Arch, etc...)
 - Github CLI configurado (opcional, para criar repositório no GitHub)
 
 ---
