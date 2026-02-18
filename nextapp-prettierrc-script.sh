@@ -73,7 +73,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={\`\${inter.className} antialiased\`}>
         {children}
       </body>
@@ -151,7 +151,7 @@ read -p "🔗 Deseja criar repositório Git local? (y/n): " git_init
 if [[ "$git_init" == "y" ]]; then
   git init
   git add .
-  git commit -m "🧱 initial commit with React Compiler enabled"
+  git commit -m "feat: Initial Next.js project configurations with Prettirc and Tailwind CSS."
 
   read -p "🌐 Deseja criar repositório no GitHub? (y/n): " gh_push
   if [[ "$gh_push" == "y" ]]; then
