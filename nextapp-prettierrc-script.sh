@@ -164,3 +164,405 @@ fi
 echo -e "\n🎉 Projeto '$project_name' configurado com sucesso!"
 echo -e "⚡ React Compiler: \033[1mATIVADO\033[0m"
 echo -e "\n👉 Rode com: \033[1mpnpm dev\033[0m"
+
+
+# #!/bin/bash
+
+# clear
+# echo "🚀 Criador de projetos Next.js com pnpm + Tailwind + ESLint + Prettier + Shadcn + GitHub"
+
+# # 🧠 Pergunta o nome do projeto
+# read -p "📦 Qual o nome do projeto? " project_name
+
+# if [ -z "$project_name" ]; then
+#   echo "❌ Nome do projeto não pode estar vazio."
+#   exit 1
+# fi
+
+# # 🚧 Cria o projeto com as opções desejadas
+# pnpm create next-app@latest "$project_name" \
+#   --ts \
+#   --tailwind \
+#   --app \
+#   --src-dir \
+#   --eslint \
+#   --import-alias '@/*' \
+#   --turbopack \
+#   --no
+
+# cd "$project_name" || exit 1
+
+# echo "✅ Projeto criado com sucesso!"
+
+# # 💿 Instala dependências do Shadcn UI
+# echo "📦 Instalando dependências do Shadcn UI..."
+# pnpm add @shadcn/ui clsx tailwind-variants
+
+# # ⚙️ Inicializa Shadcn UI
+# echo "⚙️ Inicializando Shadcn UI..."
+# echo "🎨 Ao iniciar, selecione a cor base desejada usando as setas do teclado (⬆️⬇️) e pressione ENTER:"
+# echo "    → Neutral"
+# echo "    → Gray"
+# echo "    → Zinc"
+# echo "    → Stone"
+# echo "    → Slate"
+# pnpm dlx shadcn@latest init
+
+# # 🧹 Instala o Prettier + Plugin Tailwind
+# echo "🎯 Instalando Prettier e plugin Tailwind..."
+# pnpm add -D prettier prettier-plugin-tailwindcss
+
+# # 🛠️ Cria .prettierrc.json com configurações customizadas
+# cat > .prettierrc.json <<EOF
+# {
+#   "\$schema": "http://json.schemastore.org/prettierrc",
+#   "singleQuote": true,
+#   "jsxSingleQuote": false,
+#   "semi": false,
+#   "trailingComma": "es5",
+#   "arrowParens": "avoid",
+#   "printWidth": 100,
+#   "tabWidth": 2,
+#   "useTabs": false,
+#   "bracketSpacing": true,
+#   "bracketSameLine": false,
+#   "plugins": [
+#     "prettier-plugin-tailwindcss"
+#   ],
+#   "tailwindConfig": "./tailwind.config.js"
+# }
+# EOF
+
+# # ⚙️ Cria configurações para VSCode em .vscode/settings.json
+# mkdir -p .vscode
+# cat > .vscode/settings.json <<EOF
+# {
+#   "editor.formatOnSave": true,
+#   "editor.defaultFormatter": "esbenp.prettier-vscode",
+#   "eslint.workingDirectories": [
+#     {
+#       "mode": "auto"
+#     }
+#   ],
+#   "eslint.validate": [
+#     "javascript",
+#     "javascriptreact",
+#     "typescript",
+#     "typescriptreact"
+#   ],
+#   "editor.codeActionsOnSave": {
+#     "source.fixAll.eslint": "explicit"
+#   },
+#   "files.eol": "\\n",
+#   "files.insertFinalNewline": true,
+#   "prettier.enableDebugLogs": false,
+#   "[typescriptreact]": {
+#     "editor.defaultFormatter": "esbenp.prettier-vscode"
+#   }
+# }
+# EOF
+
+# # 🧬 Inicializa Git + GitHub
+# read -p "🔗 Deseja criar repositório Git local? (y/n): " git_init
+# if [[ "$git_init" == "y" ]]; then
+#   git init
+#   git add .
+#   git commit -m "🧱 initial commit"
+
+#   read -p "🌐 Deseja criar um repositório no GitHub e fazer push? (y/n): " gh_push
+#   if [[ "$gh_push" == "y" ]]; then
+#     read -p "🔐 Qual o nome do repositório no GitHub (ou ENTER para '$project_name')? " repo_name
+#     repo_name=${repo_name:-$project_name}
+
+#     gh repo create "$repo_name" --public --source=. --remote=origin --push
+#     echo "✅ Repositório enviado para o GitHub!"
+#   fi
+# fi
+
+# # ✅ Finalização
+# echo -e "\n🎉 Projeto '$project_name' criado e pronto para desenvolvimento!"
+# echo -e "\n👉 Rode com: \033[1mpnpm dev\033[0m"
+#!/bin/bash
+
+clear
+echo "🚀 Criador de projetos Next.js (React Compiler + Custom Structure) + Tailwind + Shadcn"
+
+# 🧠 Pergunta o nome do projeto
+read -p "📦 Qual o nome do projeto? " project_name
+
+if [ -z "$project_name" ]; then
+  echo "❌ Nome do projeto não pode estar vazio."
+  exit 1
+fi
+
+# 🚧 Cria o projeto base com React Compiler ativado
+# Adicionado --react-compiler na lista de flags
+pnpm create next-app@latest "$project_name" \
+  --ts \
+  --tailwind \
+  --app \
+  --src-dir \
+  --eslint \
+  --react-compiler \
+  --import-alias '@/*' \
+  --turbopack \
+  --no
+
+cd "$project_name" || exit 1
+
+echo "✅ Projeto base criado com React Compiler!"
+
+# ==========================================
+# 📂 REESTRUTURAÇÃO DE PASTAS E ARQUIVOS
+# ==========================================
+echo "📂 Reorganizando estrutura de pastas..."
+
+# 1. Criar novas pastas dentro de src/
+mkdir -p src/styles src/types src/utils src/lib
+
+# 2. Mover e renomear globals.css
+if [ -f "src/app/globals.css" ]; then
+  mv src/app/globals.css src/styles/globals.css
+  echo "moved: src/app/globals.css -> src/styles/globals.css"
+fi
+
+# 3. Criar arquivo de tipos
+cat > src/types/globals.d.ts <<EOF
+declare module '*.css';
+EOF
+echo "created: src/types/globals.d.ts"
+
+# 4. Criar configuração de fontes separada
+cat > src/utils/fonts.ts <<EOF
+import { Inter } from "next/font/google";
+
+export const inter = Inter({ subsets: ["latin"] });
+EOF
+echo "created: src/utils/fonts.ts"
+
+# 5. Reescrever layout.tsx para usar novos caminhos
+cat > src/app/layout.tsx <<EOF
+import type { Metadata } from "next";
+import "@/styles/globals.css";
+import { inter } from "@/utils/fonts";
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="pt-BR">
+      <body className={\`\${inter.className} antialiased\`}>
+        {children}
+      </body>
+    </html>
+  );
+}
+EOF
+echo "updated: src/app/layout.tsx (imports corrigidos)"
+
+# ==========================================
+# 📦 INSTALAÇÃO E CONFIGURAÇÃO DE FERRAMENTAS
+# ==========================================
+
+# 💿 Instala dependências do Shadcn UI
+echo "📦 Instalando dependências do Shadcn UI..."
+pnpm add @shadcn/ui clsx tailwind-variants
+
+# ⚙️ Inicializa Shadcn UI
+echo "⚙️ Inicializando Shadcn UI..."
+echo "🎨 Selecione a cor base (o script ajustará o css path automaticamente no components.json se necessário):"
+pnpm dlx shadcn@latest init
+
+# Correção de path no components.json caso o init não ache o css movido
+if [ -f "components.json" ]; then
+  sed -i 's|src/app/globals.css|src/styles/globals.css|g' components.json
+fi
+
+# 🧹 Instala Prettier + Plugin
+echo "🎯 Instalando Prettier..."
+pnpm add -D prettier prettier-plugin-tailwindcss
+
+# 🛠️ Cria .prettierrc.json
+cat > .prettierrc.json <<EOF
+{
+  "\$schema": "http://json.schemastore.org/prettierrc",
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "semi": false,
+  "trailingComma": "es5",
+  "arrowParens": "avoid",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "plugins": [
+    "prettier-plugin-tailwindcss"
+  ]
+}
+EOF
+
+# ⚙️ Configurações VSCode
+mkdir -p .vscode
+cat > .vscode/settings.json <<EOF
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.eol": "\n",
+  "prettier.enableDebugLogs": false
+}
+EOF
+
+# 🧬 Git Init
+read -p "🔗 Deseja criar repositório Git local? (y/n): " git_init
+if [[ "$git_init" == "y" ]]; then
+  git init
+  git add .
+  git commit -m "feat: Initial Next.js project configurations with Prettirc and Tailwind CSS."
+
+  read -p "🌐 Deseja criar repositório no GitHub? (y/n): " gh_push
+  if [[ "$gh_push" == "y" ]]; then
+    read -p "🔐 Nome do repositório (ENTER para '$project_name'): " repo_name
+    repo_name=${repo_name:-$project_name}
+    gh repo create "$repo_name" --public --source=. --remote=origin --push
+  fi
+fi
+
+echo -e "\n🎉 Projeto '$project_name' configurado com sucesso!"
+echo -e "⚡ React Compiler: \033[1mATIVADO\033[0m"
+echo -e "\n👉 Rode com: \033[1mpnpm dev\033[0m"
+
+
+# #!/bin/bash
+
+# clear
+# echo "🚀 Criador de projetos Next.js com pnpm + Tailwind + ESLint + Prettier + Shadcn + GitHub"
+
+# # 🧠 Pergunta o nome do projeto
+# read -p "📦 Qual o nome do projeto? " project_name
+
+# if [ -z "$project_name" ]; then
+#   echo "❌ Nome do projeto não pode estar vazio."
+#   exit 1
+# fi
+
+# # 🚧 Cria o projeto com as opções desejadas
+# pnpm create next-app@latest "$project_name" \
+#   --ts \
+#   --tailwind \
+#   --app \
+#   --src-dir \
+#   --eslint \
+#   --import-alias '@/*' \
+#   --turbopack \
+#   --no
+
+# cd "$project_name" || exit 1
+
+# echo "✅ Projeto criado com sucesso!"
+
+# # 💿 Instala dependências do Shadcn UI
+# echo "📦 Instalando dependências do Shadcn UI..."
+# pnpm add @shadcn/ui clsx tailwind-variants
+
+# # ⚙️ Inicializa Shadcn UI
+# echo "⚙️ Inicializando Shadcn UI..."
+# echo "🎨 Ao iniciar, selecione a cor base desejada usando as setas do teclado (⬆️⬇️) e pressione ENTER:"
+# echo "    → Neutral"
+# echo "    → Gray"
+# echo "    → Zinc"
+# echo "    → Stone"
+# echo "    → Slate"
+# pnpm dlx shadcn@latest init
+
+# # 🧹 Instala o Prettier + Plugin Tailwind
+# echo "🎯 Instalando Prettier e plugin Tailwind..."
+# pnpm add -D prettier prettier-plugin-tailwindcss
+
+# # 🛠️ Cria .prettierrc.json com configurações customizadas
+# cat > .prettierrc.json <<EOF
+# {
+#   "\$schema": "http://json.schemastore.org/prettierrc",
+#   "singleQuote": true,
+#   "jsxSingleQuote": false,
+#   "semi": false,
+#   "trailingComma": "es5",
+#   "arrowParens": "avoid",
+#   "printWidth": 100,
+#   "tabWidth": 2,
+#   "useTabs": false,
+#   "bracketSpacing": true,
+#   "bracketSameLine": false,
+#   "plugins": [
+#     "prettier-plugin-tailwindcss"
+#   ],
+#   "tailwindConfig": "./tailwind.config.js"
+# }
+# EOF
+
+# # ⚙️ Cria configurações para VSCode em .vscode/settings.json
+# mkdir -p .vscode
+# cat > .vscode/settings.json <<EOF
+# {
+#   "editor.formatOnSave": true,
+#   "editor.defaultFormatter": "esbenp.prettier-vscode",
+#   "eslint.workingDirectories": [
+#     {
+#       "mode": "auto"
+#     }
+#   ],
+#   "eslint.validate": [
+#     "javascript",
+#     "javascriptreact",
+#     "typescript",
+#     "typescriptreact"
+#   ],
+#   "editor.codeActionsOnSave": {
+#     "source.fixAll.eslint": "explicit"
+#   },
+#   "files.eol": "\\n",
+#   "files.insertFinalNewline": true,
+#   "prettier.enableDebugLogs": false,
+#   "[typescriptreact]": {
+#     "editor.defaultFormatter": "esbenp.prettier-vscode"
+#   }
+# }
+# EOF
+
+# # 🧬 Inicializa Git + GitHub
+# read -p "🔗 Deseja criar repositório Git local? (y/n): " git_init
+# if [[ "$git_init" == "y" ]]; then
+#   git init
+#   git add .
+#   git commit -m "🧱 initial commit"
+
+#   read -p "🌐 Deseja criar um repositório no GitHub e fazer push? (y/n): " gh_push
+#   if [[ "$gh_push" == "y" ]]; then
+#     read -p "🔐 Qual o nome do repositório no GitHub (ou ENTER para '$project_name')? " repo_name
+#     repo_name=${repo_name:-$project_name}
+
+#     gh repo create "$repo_name" --public --source=. --remote=origin --push
+#     echo "✅ Repositório enviado para o GitHub!"
+#   fi
+# fi
+
+# # ✅ Finalização
+# echo -e "\n🎉 Projeto '$project_name' criado e pronto para desenvolvimento!"
+# echo -e "\n👉 Rode com: \033[1mpnpm dev\033[0m"
