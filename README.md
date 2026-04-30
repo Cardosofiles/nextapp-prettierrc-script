@@ -296,3 +296,17 @@ Terá as configurações do projeto no diretório `.vscode`, com o conteúdo:
 | Novos prompts | — | React Compiler (No) e AGENTS.md (No) |
 | Node.js | `>= 18` | `>= 20.9` |
 | Tailwind v4 | `tailwind.config.js` | Configuração via `@theme` em `globals.css` |
+
+## 🙏 Agradecimentos
+
+`Obrigado por usar este repositório!`
+
+Se este script te ajudou a economizar tempo e agilizou o seu fluxo de trabalho,
+considere deixar uma ⭐ no repositório — isso ajuda muito o projeto a crescer e
+chegar a mais desenvolvedores.
+
+Contribuições, sugestões e feedbacks são sempre bem-vindos.
+Sinta-se à vontade para abrir uma _issue_ ou enviar um _pull request_. 🚀
+
+> Feito pensando em produtividade e boas práticas de código.
+
