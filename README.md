@@ -1,17 +1,29 @@
 # 🚀 Script criador de aplicação com NextJS, Shadcn UI com Prettier e ESLint com push para o Github Automatizado no WSL
 
-Este script simplifica o fluxo de trabalho da criação de uma aplicação Next, com Shadcn UI
-iniciando e criando um repositório com o Git e Github.
+Este script simplifica o fluxo de trabalho da criação de uma aplicação Next, com Shadcn UI iniciando e criando um repositório com o Git e Github.
 
-- What is your project named? my-app (Pergunta no início do script)
-- Would you like to use TypeScript? No / Yes (Yes para TypeScript)
-- Would you like to use ESLint? No / Yes (Yes para ESLint)
-- Would you like to use Tailwind CSS? No / Yes (Yes para TailwindCSS)
-- Would you like your code inside a `src/` directory? No / Yes (Yes para src)
-- Would you like to use App Router? (recommended) No / Yes (Yes para App Router)
-- Would you like to use Turbopack for `next dev`? No / Yes (Yes para Turbopack)
-- Would you like to customize the import alias (`@/*` by default)? No / Yes (Yes para alias)
-- What import alias would you like configured? @/\* (No para configured)
+O `create-next-app` exibe uma pergunta inicial sobre as configurações recomendadas:
+
+```
+Would you like to use the recommended Next.js defaults?
+  ❯ Yes, use recommended defaults - TypeScript, ESLint, Tailwind CSS, App Router, AGENTS.md
+    No, reuse previous settings
+    No, customize settings - Choose your own preferences
+```
+
+Ao escolher **No, customize settings**, as perguntas são:
+
+- What is your project named? **my-app**
+- Would you like to use TypeScript? **Yes**
+- Which linter would you like to use? **ESLint** *(ESLint / Biome / None)*
+- Would you like to use React Compiler? **No** *(novo no Next.js 15+)*
+- Would you like to use Tailwind CSS? **Yes**
+- Would you like your code inside a `src/` directory? **Yes**
+- Would you like to use App Router? (recommended) **Yes**
+- Would you like to customize the import alias (`@/*` by default)? **No**
+- Would you like to include AGENTS.md to guide coding agents? **No** *(novo no Next.js 15+)*
+
+> ⚠️ A pergunta **"Would you like to use Turbopack for `next dev`?"** foi removida. O Turbopack agora é o bundler padrão.
 
 ---
 
@@ -85,10 +97,7 @@ cat > .prettierrc.json <<EOF
   "useTabs": false,
   "bracketSpacing": true,
   "bracketSameLine": false,
-  "plugins": [
-    "prettier-plugin-tailwindcss"
-  ],
-  "tailwindConfig": "./tailwind.config.js"
+  "plugins": [ "prettier-plugin-tailwindcss" ]
 }
 EOF
 
@@ -189,7 +198,7 @@ source ~/.zshrc
 
 ### 4. 🚀 Usar o comando
 
-Navegue até o diretório ou crie uma pasta para o seu projeto mkdir my-app e rode:
+Navegue até o diretório desejado e rode:
 
 ```bash
 next-shadcn-prettierrc
@@ -206,25 +215,29 @@ Você pode personalizar este script para incluir validações, log de histórico
 ## 📌 Requisitos
 
 - Git instalado
-- Node instalado >= 18
-- Pnpm instalado globalmente
-- Ambiente Linux (Ubuntu, Kali, Arch, etc...)
-- Github CLI configurado (opcional, para criar repositório no GitHub)
+- Node.js instalado **>= 20.9**
+- pnpm instalado globalmente
+- Ambiente Linux (Ubuntu, Kali, Arch, WSL, etc...)
+- GitHub CLI configurado (opcional, para criar repositório no GitHub)
 
 ---
 
 ## 🛠 Exemplo de uso
 
 ```bash
-$ create-next
-📦 Aguarde a instalação, siga o passo a passo do script no terminal 🚀
+$ next-shadcn-prettierrc
+📦 Qual o nome do projeto?
 ```
+
+---
 
 ## Observação
 
-- O script irá criar o arquivo .prettierrc.json, com o conteúdo:
+O script irá criar o arquivo `.prettierrc.json` com o conteúdo:
 
-```
+> ⚠️ **Tailwind CSS v4**: Não utiliza mais `tailwind.config.js`. A configuração de tema é feita via diretiva `@theme` no `globals.css`. O plugin `prettier-plugin-tailwindcss` v0.6+ detecta automaticamente o stylesheet.
+
+```json
 {
   "$schema": "http://json.schemastore.org/prettierrc",
   "singleQuote": true,
@@ -239,14 +252,13 @@ $ create-next
   "bracketSameLine": false,
   "plugins": [
     "prettier-plugin-tailwindcss"
-  ],
-  "tailwindConfig": "./tailwind.config.js"
+  ]
 }
 ```
 
-- Tera as configurações do projeto no diretório .vscode, com o conteúdo:
+Terá as configurações do projeto no diretório `.vscode`, com o conteúdo:
 
-```
+```json
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -266,6 +278,21 @@ $ create-next
   },
   "files.eol": "\n",
   "files.insertFinalNewline": true,
-  "prettier.enableDebugLogs": false
+  "prettier.enableDebugLogs": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
 ```
+
+---
+
+## Resumo das alterações (Next.js 15+ / Tailwind v4)
+
+| Seção | Antes | Depois |
+|---|---|---|
+| Prompt ESLint | `Would you like to use ESLint? Yes` | `Which linter would you like to use? ESLint` |
+| Prompt Turbopack | `Would you like to use Turbopack? Yes` | Removido — padrão no Next.js 15+ |
+| Novos prompts | — | React Compiler (No) e AGENTS.md (No) |
+| Node.js | `>= 18` | `>= 20.9` |
+| Tailwind v4 | `tailwind.config.js` | Configuração via `@theme` em `globals.css` |
